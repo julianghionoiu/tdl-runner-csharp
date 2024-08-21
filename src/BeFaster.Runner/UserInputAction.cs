@@ -3,18 +3,13 @@ using TDL.Client.Runner;
 
 namespace BeFaster.Runner
 {
-    public class UserInputAction : IActionProvider
+    public class UserInputAction(string[] args) : IActionProvider
     {
-        private string[] args;
-
-        public UserInputAction(string[] args)
-        {
-            this.args = args;
-        }
+        private readonly string[] args = args;
 
         public string Get() =>
             args.Length > 0
                 ? args[0]
-                : Console.In.ReadLine();
+                : Console.In.ReadLine() ?? string.Empty;
     }
 }

@@ -7,7 +7,7 @@ namespace BeFaster.App.Tests.Solutions.TST
     
         [Test]
         public void RunApply() {
-            Assert.AreEqual(One.apply(), 1);
+            Assert.That(One.apply(), Is.EqualTo(1));
         }
     }
 }

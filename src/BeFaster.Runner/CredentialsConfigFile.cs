@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BeFaster.Runner.Exceptions;
-using BeFaster.Runner.Extensions;
 using BeFaster.Runner.Utils;
 using TDL.Client.Utils;
 
@@ -11,7 +10,7 @@ namespace BeFaster.Runner
 {
     public static class CredentialsConfigFile
     {
-        private static readonly Dictionary<string, string> Properties = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> Properties = new();
 
         static CredentialsConfigFile()
         {
@@ -33,14 +32,12 @@ namespace BeFaster.Runner
         }
 
         public static string Get(string key) =>
-            Optional<string>
-                .OfNullable(Properties.GetValueOrDefault(key))
-                .OrElseThrow(() => new ConfigNotFoundException($@"The ""credentials.config"" file does not contain key {key}"));
-
+            Properties.TryGetValue(key, out var value)
+                ? value
+                : throw new ConfigNotFoundException($@"The ""credentials.config"" file does not contain key {key}");
+                
         public static string Get(string key, string defaultValue) =>
-            Optional<string>
-                .OfNullable(Properties.GetValueOrDefault(key))
-                .OrElse(defaultValue);
+            Properties.GetValueOrDefault(key) ?? defaultValue;
 
         public static T Get<T>(string key, T defaultValue) =>
             (T)Convert.ChangeType(Get(key), typeof(T));
