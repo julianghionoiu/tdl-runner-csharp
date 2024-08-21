@@ -30,6 +30,7 @@ EOF
 dotnet test --collect:"XPlat Code Coverage" --settings ${coverlet_settings_file}
 last_test_run_id=$(ls -rt1 ./src/BeFaster.App.Tests/TestResults/  | tail -n 1)
 
-xmllint ./src/BeFaster.App.Tests/TestResults/${last_test_run_id}/coverage.cobertura.xml  --xpath 'string(/coverage/@line-rate)'  > ${CODE_COVERAGE_OUTPUT_FILE}
+computed_coverage_rate=$(xmllint ./src/BeFaster.App.Tests/TestResults/${last_test_run_id}/coverage.cobertura.xml  --xpath 'string(/coverage/@line-rate)')
+printf "%.0f\n" $(echo "$computed_coverage_rate*100" | bc -l)   > ${CODE_COVERAGE_OUTPUT_FILE}
 cat ${CODE_COVERAGE_OUTPUT_FILE}
 exit 0
