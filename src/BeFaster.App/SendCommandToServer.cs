@@ -29,7 +29,7 @@ namespace BeFaster.App
         ///      dotnet run --project src/BeFaster.App
         ///
         ///   To run your unit tests locally:
-        ///      Run the "BeFaster.App.Tests - Unit Tests" configuration.
+        ///      Run the "BeFaster.App.Tests" project.
         ///
         /// ~~~~~~~~~~ The workflow ~~~~~~~~~~~~~
         ///
