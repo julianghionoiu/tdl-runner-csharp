@@ -35,7 +35,20 @@ EOF
 dotnet test --collect:"XPlat Code Coverage" --settings ${coverlet_settings_file} ${SCRIPT_CURRENT_DIR} || true 1>&2
 last_test_run_id=$(ls -rt1 ${SCRIPT_CURRENT_DIR}/src/BeFaster.App.Tests/TestResults/  | tail -n 1)
 
-computed_coverage_rate=$(xmllint ${SCRIPT_CURRENT_DIR}/src/BeFaster.App.Tests/TestResults/${last_test_run_id}/coverage.cobertura.xml  --xpath 'string(/coverage/@line-rate)')
-printf "%.0f\n" $(echo "$computed_coverage_rate*100" | bc -l)   > ${CODE_COVERAGE_OUTPUT_FILE}
+# Make sense of the coverage report
+coverage_report_file=${SCRIPT_CURRENT_DIR}/src/BeFaster.App.Tests/TestResults/${last_test_run_id}/coverage.cobertura.xml
+
+## Special case to remove empty reports
+lines_covered=$(xmllint ${coverage_report_file}  --xpath 'string(/coverage/@lines-covered)')
+echo "lines_covered=${lines_covered}"
+lines_valid=$(xmllint ${coverage_report_file}  --xpath 'string(/coverage/@lines-valid)')
+echo "lines_valid=${lines_valid}"
+
+if [ "${lines_valid}" -gt "0" ]; then
+  printf "%.0f\n" $(echo "($lines_covered/$lines_valid)*100" | bc -l)   > ${CODE_COVERAGE_OUTPUT_FILE}
+else
+  echo 0 > ${CODE_COVERAGE_OUTPUT_FILE}
+fi
+
 cat ${CODE_COVERAGE_OUTPUT_FILE}
 exit 0
