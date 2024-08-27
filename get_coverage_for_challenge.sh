@@ -46,8 +46,6 @@ echo "lines_valid=${lines_valid}"
 
 if [ "${lines_valid}" -gt "0" ]; then
   printf "%.0f\n" $(echo "($lines_covered/$lines_valid)*100" | bc -l)   > ${CODE_COVERAGE_OUTPUT_FILE}
-else
-  echo 0 > ${CODE_COVERAGE_OUTPUT_FILE}
 fi
 
 cat ${CODE_COVERAGE_OUTPUT_FILE}
