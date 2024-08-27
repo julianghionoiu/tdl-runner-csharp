@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
 set -x
+set -e
+set -u
+set -o pipefail
+
+SCRIPT_CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 CHALLENGE_ID=$1
-CODE_COVERAGE_OUTPUT_FILE="./coverage.tdl"
+CODE_COVERAGE_OUTPUT_FILE="${SCRIPT_CURRENT_DIR}/coverage.tdl"
 
-dotnet build
+dotnet build ${SCRIPT_CURRENT_DIR} || true 1>&2
 
 coverlet_settings_file=$(mktemp)
 cat << EOF > ${coverlet_settings_file}
@@ -27,10 +32,10 @@ cat << EOF > ${coverlet_settings_file}
 </RunSettings>
 EOF
 
-dotnet test --collect:"XPlat Code Coverage" --settings ${coverlet_settings_file}
-last_test_run_id=$(ls -rt1 ./src/BeFaster.App.Tests/TestResults/  | tail -n 1)
+dotnet test --collect:"XPlat Code Coverage" --settings ${coverlet_settings_file} ${SCRIPT_CURRENT_DIR} || true 1>&2
+last_test_run_id=$(ls -rt1 ${SCRIPT_CURRENT_DIR}/src/BeFaster.App.Tests/TestResults/  | tail -n 1)
 
-computed_coverage_rate=$(xmllint ./src/BeFaster.App.Tests/TestResults/${last_test_run_id}/coverage.cobertura.xml  --xpath 'string(/coverage/@line-rate)')
+computed_coverage_rate=$(xmllint ${SCRIPT_CURRENT_DIR}/src/BeFaster.App.Tests/TestResults/${last_test_run_id}/coverage.cobertura.xml  --xpath 'string(/coverage/@line-rate)')
 printf "%.0f\n" $(echo "$computed_coverage_rate*100" | bc -l)   > ${CODE_COVERAGE_OUTPUT_FILE}
 cat ${CODE_COVERAGE_OUTPUT_FILE}
 exit 0
