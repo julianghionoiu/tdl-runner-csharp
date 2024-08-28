@@ -15,5 +15,5 @@ IDE
 ## 2. How to start
 
 - Open the `befaster.sln` solution in your favorite IDE
-- With the solution openened, navigate to `src/BeFaster.App/SendCommandToServer.cs`
+- With the solution openened, navigate to `src\BeFaster.App\SendCommandToServer.cs`
 - Read the comments as documentation, they will guide through the rest of the setup
