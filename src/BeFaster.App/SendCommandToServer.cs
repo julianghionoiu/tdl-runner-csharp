@@ -24,12 +24,12 @@ namespace BeFaster.App
         ///      Configure the "BeFaster.App" solution to Run on External Console then run.
         ///
         ///   From command line:
-        ///      dotnet run --project src\BeFaster.App
-        ///        or
         ///      dotnet run --project src/BeFaster.App
         ///
         ///   To run your unit tests locally:
         ///      Run the "BeFaster.App.Tests" project.
+        ///        or
+        ///      dotnet test
         ///
         /// ~~~~~~~~~~ The workflow ~~~~~~~~~~~~~
         ///
