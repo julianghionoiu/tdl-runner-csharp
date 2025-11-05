@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TDL.Client.Queue.Abstractions;
 using BeFaster.App.Solutions.CHK;
 using BeFaster.App.Solutions.RBT;
+using BeFaster.App.Solutions.HOC;
 using BeFaster.App.Solutions.AMZ;
 using BeFaster.App.Solutions.ULT;
 using BeFaster.App.Solutions.DMO;
@@ -23,6 +24,8 @@ namespace BeFaster.App
         private readonly FizzBuzzSolution fizzBuzzSolution;
         private readonly CheckoutSolution checkoutSolution;
         private readonly RabbitHoleSolution rabbitHoleSolution;
+        private readonly HouseOfCardsSolution houseOfCardsSolution;
+
         private readonly AmazingSolution amazingSolution;
         private readonly UltimateSolution ultimateSolution;
         private readonly DemoRound1Solution demoRound1Solution;
@@ -37,6 +40,7 @@ namespace BeFaster.App
             fizzBuzzSolution = new FizzBuzzSolution();
             checkoutSolution = new CheckoutSolution();
             rabbitHoleSolution = new RabbitHoleSolution();
+            houseOfCardsSolution = new HouseOfCardsSolution();
             amazingSolution = new AmazingSolution();
             ultimateSolution = new UltimateSolution();
             demoRound1Solution = new DemoRound1Solution();
@@ -63,6 +67,12 @@ namespace BeFaster.App
                 p[1].GetAsInteger(),
                 p[2].GetAsString(),
                 p[3].GetAsMapOf<string>()
+            );
+
+       public object RenderHouse(List<ParamAccessor> p) =>
+            houseOfCardsSolution.RenderHouse(
+                p[0].GetAsString(),
+                p[1].GetAsMapOf<string>()
             );
 
         public object AmazingMaze(List<ParamAccessor> p) =>
